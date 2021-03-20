@@ -2,38 +2,40 @@ import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@a
 import {Post} from '../app.component';
 
 @Component({
-    selector: 'app-post-form',
-    templateUrl: './post-form.component.html',
-    styleUrls: ['./post-form.component.scss']
+  selector: 'app-post-form',
+  templateUrl: './post-form.component.html',
+  styleUrls: ['./post-form.component.scss']
 })
 export class PostFormComponent implements OnInit {
 
-    @ViewChild('titleInput', {static: false}) inputRef: ElementRef;
-    @Output() onAdd: EventEmitter<Post> = new EventEmitter<Post>();
+  @Output() onAdd: EventEmitter<Post> = new EventEmitter<Post>()
 
-    title = '';
-    text = '';
+  @ViewChild('titleInput', {static: false}) inputRef: ElementRef
 
-    constructor() {
+  title = ''
+  text = ''
+
+  constructor() { }
+
+  ngOnInit() {
+
+  }
+
+  addPost() {
+    if (this.text.trim() && this.title.trim()) {
+      const post: Post = {
+        title: this.title,
+        text: this.text
+      }
+
+      this.onAdd.emit(post)
+
+      this.title = this.text = ''
     }
+  }
 
-    ngOnInit() {
-    }
+  focusTitle() {
+    this.inputRef.nativeElement.focus()
+  }
 
-    addPost() {
-        if (this.title.trim() && this.text.trim()) {
-            const post: Post = {
-                title: this.title,
-                text: this.text
-            };
-            this.onAdd.emit(post);
-            // console.log('New Post:', post);
-            this.text = this.title = '';
-        }
-    }
-
-    focusTitle() {
-        this.inputRef.nativeElement.focus();
-
-    }
 }
